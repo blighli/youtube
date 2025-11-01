@@ -1,9 +1,9 @@
 from PyQt6.QtWidgets import QApplication, QWidget
+from src.MainWindow import MainWindow
 
 def main():
     app = QApplication([])
-    window = QWidget()
-    window.setWindowTitle("Hello from youtube!")
+    window = MainWindow()
     window.show()
     app.exec()
 
