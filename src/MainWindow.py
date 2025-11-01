@@ -4,7 +4,6 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.process = QProcess()
-        #self.process.setProgram("yt-dlp.exe")
         self.process.readyReadStandardOutput.connect(self.handle_output)
         self.process.readyReadStandardError.connect(self.handle_error)
         self.initUI()
@@ -30,14 +29,41 @@ class MainWindow(QMainWindow):
         cenralWidget.setLayout(vBox)
 
     def onNewUrlEntered(self):
-        command = self.urlEdit.text()
-        self.process.start(command)
+        command = f"yt-dlp.exe {self.urlEdit.text()}"
+        self.textEdit.append(f"Running command: {command}")
+        self.process.start("yt-dlp.exe", [self.urlEdit.text()])
         self.urlEdit.clear()
 
     def handle_output(self):
-        data = self.process.readAllStandardOutput().data().decode()
-        self.textEdit.append(data)
+        try:
+            # Try UTF-8 first
+            data = self.process.readAllStandardOutput().data().decode('utf-8', errors='ignore')
+            self.textEdit.append(data)
+            # Scroll to the end
+            self.textEdit.verticalScrollBar().setValue(
+                self.textEdit.verticalScrollBar().maximum()
+            )
+        except UnicodeDecodeError:
+            # Fallback to system default encoding
+            data = self.process.readAllStandardOutput().data().decode('cp1252', errors='ignore')
+            self.textEdit.append(data)
+            # Scroll to the end
+            self.textEdit.verticalScrollBar().setValue(
+                self.textEdit.verticalScrollBar().maximum()
+            )
 
     def handle_error(self):
-        data = self.process.readAllStandardError().data().decode()
-        self.textEdit.append(f"Error: {data}")
+        try:
+            data = self.process.readAllStandardError().data().decode('utf-8', errors='ignore')
+            self.textEdit.append(f"Error: {data}")
+            # Scroll to the end
+            self.textEdit.verticalScrollBar().setValue(
+                self.textEdit.verticalScrollBar().maximum()
+            )
+        except UnicodeDecodeError:
+            data = self.process.readAllStandardError().data().decode('cp1252', errors='ignore')
+            self.textEdit.append(f"Error: {data}")
+            # Scroll to the end
+            self.textEdit.verticalScrollBar().setValue(
+                self.textEdit.verticalScrollBar().maximum()
+            )
