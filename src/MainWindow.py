@@ -1,5 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QMainWindow, QTextEdit, QLineEdit, QVBoxLayout
 from PyQt6.QtCore import QProcess
+from PyQt6.QtGui import QIcon
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -10,6 +12,7 @@ class MainWindow(QMainWindow):
 
 
     def initUI(self):
+        self.setWindowIcon(QIcon('youtube.ico'))
         self.setWindowTitle("Hello from youtube!")
         self.setGeometry(100, 100, 800, 600)
 
@@ -35,35 +38,17 @@ class MainWindow(QMainWindow):
         self.urlEdit.clear()
 
     def handle_output(self):
-        try:
-            # Try UTF-8 first
-            data = self.process.readAllStandardOutput().data().decode('utf-8', errors='ignore')
-            self.textEdit.append(data)
-            # Scroll to the end
-            self.textEdit.verticalScrollBar().setValue(
-                self.textEdit.verticalScrollBar().maximum()
-            )
-        except UnicodeDecodeError:
-            # Fallback to system default encoding
-            data = self.process.readAllStandardOutput().data().decode('cp1252', errors='ignore')
-            self.textEdit.append(data)
-            # Scroll to the end
-            self.textEdit.verticalScrollBar().setValue(
-                self.textEdit.verticalScrollBar().maximum()
-            )
+        data = self.process.readAllStandardOutput().data().decode(encoding="gbk", errors='replace')
+        self.textEdit.append(data)
+        # Scroll to the end
+        self.textEdit.verticalScrollBar().setValue(
+            self.textEdit.verticalScrollBar().maximum()
+        )
 
     def handle_error(self):
-        try:
-            data = self.process.readAllStandardError().data().decode('utf-8', errors='ignore')
-            self.textEdit.append(f"Error: {data}")
-            # Scroll to the end
-            self.textEdit.verticalScrollBar().setValue(
-                self.textEdit.verticalScrollBar().maximum()
-            )
-        except UnicodeDecodeError:
-            data = self.process.readAllStandardError().data().decode('cp1252', errors='ignore')
-            self.textEdit.append(f"Error: {data}")
-            # Scroll to the end
-            self.textEdit.verticalScrollBar().setValue(
-                self.textEdit.verticalScrollBar().maximum()
-            )
+        data = self.process.readAllStandardError().data().decode(encoding="gbk", errors='replace')
+        self.textEdit.append(f"Error: {data}")
+        # Scroll to the end
+        self.textEdit.verticalScrollBar().setValue(
+            self.textEdit.verticalScrollBar().maximum()
+        )
