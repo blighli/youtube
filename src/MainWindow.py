@@ -1,7 +1,8 @@
-from PyQt6.QtWidgets import QWidget, QMainWindow, QTextEdit, QLineEdit, QVBoxLayout
+from PyQt6.QtWidgets import QWidget, QMainWindow, QTextEdit, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout
 from PyQt6.QtCore import QProcess
 from PyQt6.QtGui import QIcon
 from . import assets_path
+import os
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -23,12 +24,20 @@ class MainWindow(QMainWindow):
         self.urlEdit =QLineEdit()
         self.urlEdit.setPlaceholderText("Enter Youtube URL here")
         self.urlEdit.returnPressed.connect(self.onNewUrlEntered)
+
+        self.openButton = QPushButton()
+        self.openButton.setText("Video")
+        self.openButton.clicked.connect(lambda: os.startfile(os.path.abspath("video")))
+
+        hBoxTop = QHBoxLayout()
+        hBoxTop.addWidget(self.urlEdit)
+        hBoxTop.addWidget(self.openButton)
         
         self.textEdit = QTextEdit()
         self.textEdit.setPlainText("Welcome to the Youtube GUI application!")
 
         vBox = QVBoxLayout()
-        vBox.addWidget(self.urlEdit)
+        vBox.addLayout(hBoxTop)
         vBox.addWidget(self.textEdit)
         cenralWidget.setLayout(vBox)
 
