@@ -1,17 +1,8 @@
-:设定打包文件名称
-set srcName=main
-set exeName=YoutubeGUI
+:设置exe文件名称
+set name=YoutubeGUI
 
-:执行打包命令
-pyinstaller -i youtube.ico -wF %srcName%.py
+:执行打包命令生成exe文件
+pyinstaller --add-binary "assets;assets" -i "assets\youtube.ico" -wF main.py -n %name%
 
-:复制exe到当前目录
-copy .\dist\%srcName%.exe .\%exeName%.exe /Y
-
-:删除过程文件及文件夹
-rmdir /s /q __pycache__
-rmdir /s /q build
-rmdir /s /q dist
-del /q %srcName%.spec
-
-.\%exeName%.exe
+:运行生成的exe程序
+dist\%name%.exe

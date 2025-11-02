@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QMainWindow, QTextEdit, QLineEdit, QVBoxLayout
 from PyQt6.QtCore import QProcess
 from PyQt6.QtGui import QIcon
+from . import assets_path
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -12,7 +13,7 @@ class MainWindow(QMainWindow):
 
 
     def initUI(self):
-        self.setWindowIcon(QIcon('youtube.ico'))
+        self.setWindowIcon(QIcon(assets_path.get('assets//youtube.ico')))
         self.setWindowTitle("Hello from youtube!")
         self.setGeometry(100, 100, 800, 600)
 
