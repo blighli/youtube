@@ -1,2 +1,2 @@
-pyinstaller -wF main.py
+pyinstaller -i youtube.ico -wF main.py
 dist\main.exe
