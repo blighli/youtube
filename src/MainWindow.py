@@ -29,10 +29,14 @@ class MainWindow(QMainWindow):
         self.openButton.setText("Video")
         self.openButton.clicked.connect(lambda: os.startfile(os.path.abspath("video")))
 
+        self.updateButton = QPushButton()
+        self.updateButton.setText("Update yt-dlp")
+        self.updateButton.clicked.connect(self.onUpdateYtDlp)
+
         hBoxTop = QHBoxLayout()
         hBoxTop.addWidget(self.urlEdit)
         hBoxTop.addWidget(self.openButton)
-        
+        hBoxTop.addWidget(self.updateButton)
         self.textEdit = QTextEdit()
         self.textEdit.setPlainText("Welcome to the Youtube GUI application!")
 
@@ -40,6 +44,12 @@ class MainWindow(QMainWindow):
         vBox.addLayout(hBoxTop)
         vBox.addWidget(self.textEdit)
         cenralWidget.setLayout(vBox)
+
+    def onUpdateYtDlp(self):
+        command = "yt-dlp.exe -U"
+        self.textEdit.append(f"Running command: {command}")
+        self.process.start("yt-dlp.exe", ["-U"])
+
 
     def onNewUrlEntered(self):
         command = f"yt-dlp.exe {self.urlEdit.text()}"
