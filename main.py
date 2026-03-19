@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QWidget
+from PyQt6.QtWidgets import QApplication
 from src.MainWindow import MainWindow
 
 def main():
