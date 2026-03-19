@@ -23,7 +23,8 @@ class MainWindow(QMainWindow):
 
     def initUI(self):
         self.setWindowIcon(QIcon(assets_path.get('assets//youtube.ico')))
-        self.setWindowTitle("Hello from youtube!")
+        version = self._read_version()
+        self.setWindowTitle(f"Youtube Downloader - {version}")
         self.setGeometry(100, 100, 800, 600)
 
         centralWidget = QWidget()
@@ -62,6 +63,14 @@ class MainWindow(QMainWindow):
         video_dir = os.path.abspath("video")
         os.makedirs(video_dir, exist_ok=True)
         os.startfile(video_dir)
+
+    def _read_version(self):
+        try:
+            version_file = assets_path.get('assets//version')
+            with open(version_file, 'r') as f:
+                return f.read().strip()
+        except Exception:
+            return ""
 
 
     def onNewUrlEntered(self):
